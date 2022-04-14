@@ -1,2 +1,2 @@
-# chinnaswamy
+# Chinnaswamy
 The 'Scalable' URL shortener
