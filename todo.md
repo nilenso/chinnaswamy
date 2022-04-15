@@ -1,7 +1,10 @@
 - [ ] Set up Go 1.18 project with deps: Cassandra (gocql)
     - Create an entry point file (chinnaswamy.go?)
     - If easy, ping to cassandra
-    - http server that does the ping when you /server
+    - http server that does the ping when you /status
+- [ ] Config management for all the timeouts and stuff
+- [x] Log package for logging
+- [x] Separate the http server from the main process into its own package
 - [ ] Set up Cassandra using docker-compose
 - [ ] Set up infrastructure: DO droplets deployed with terraform
 - [ ] Set up CI/CD on github actions
