@@ -4,24 +4,29 @@ import (
 	"context"
 	"fmt"
 	"nilenso.com/chinnaswamy"
+	"nilenso.com/chinnaswamy/config"
 	"nilenso.com/chinnaswamy/log"
 	"os"
 	"os/signal"
 )
 
 func main() {
-	cfg := map[string]string{"listenAddress": ":8080"}
-	ctx := context.Background()
-
-	err := log.InitLogger()
-	if err != nil {
+	logErr := log.InitLogger()
+	if logErr != nil {
 		_ = fmt.Errorf("error: Could not start the logger")
 		os.Exit(2)
 	}
 
+	cfg, cfgErr := config.Load("conf.yaml")
+	if cfgErr != nil {
+		log.Errorw("Error loading config. Exiting")
+		os.Exit(1)
+	}
+	ctx := context.Background()
+
 	defer func() {
-		err := log.SyncLogs()
-		if err != nil {
+		syncErr := log.SyncLogs()
+		if syncErr != nil {
 			_ = fmt.Errorf("error: Could not sync the log")
 			os.Exit(3)
 		}
@@ -32,7 +37,7 @@ func main() {
 
 	serverDone := make(chan struct{}, 1)
 	go chinnaswamy.Serve(ctx, cfg, serverDone)
-	log.Infow("Server started", "listenAddress", cfg["listenAddress"])
+	log.Infow("Server started", "listenAddress", cfg.ListenAddress())
 
 	select {
 	case <-serverDone:

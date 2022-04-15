@@ -27,6 +27,10 @@ func Errorw(msg string, rest ...interface{}) {
 	logger.Errorw(msg, rest...)
 }
 
+func Errorf(msg string, rest ...interface{}) {
+	logger.Errorf(msg, rest...)
+}
+
 func Infow(msg string, rest ...interface{}) {
 	logger.Infow(msg, rest...)
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"nilenso.com/chinnaswamy/config"
 	"nilenso.com/chinnaswamy/log"
 	"time"
 )
@@ -23,21 +24,21 @@ func defaultMux() *http.ServeMux {
 	return mux
 }
 
-func Serve(ctx context.Context, cfg map[string]string, done chan struct{}) {
+func Serve(ctx context.Context, cfg config.Config, done chan struct{}) {
 	srv := &http.Server{
-		Addr:         cfg["listenAddress"],
-		WriteTimeout: 30 * time.Millisecond,
-		ReadTimeout:  30 * time.Millisecond,
-		IdleTimeout:  1 * time.Second,
+		Addr:         cfg.ListenAddress(),
+		WriteTimeout: cfg.WriteTimeout(),
+		ReadTimeout:  cfg.ReadTimeout(),
+		IdleTimeout:  cfg.IdleTimeout(),
 		Handler:      defaultMux(),
 	}
 	log.Infow("Starting server",
-		"listenAddress", cfg["listenAddress"],
+		"listenAddress", cfg.ListenAddress(),
 	)
 	err := srv.ListenAndServe()
 	if err != nil {
 		log.Errorw("Could not start server",
-			"listenAddress", cfg["listenAddress"],
+			"listenAddress", cfg.ListenAddress(),
 		)
 		done <- struct{}{}
 		return
