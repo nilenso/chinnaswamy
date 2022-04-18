@@ -24,21 +24,21 @@ func defaultMux() *http.ServeMux {
 	return mux
 }
 
-func Serve(ctx context.Context, cfg config.Config, done chan struct{}) {
+func Serve(ctx context.Context, done chan struct{}) {
 	srv := &http.Server{
-		Addr:         cfg.ListenAddress(),
-		WriteTimeout: cfg.WriteTimeout(),
-		ReadTimeout:  cfg.ReadTimeout(),
-		IdleTimeout:  cfg.IdleTimeout(),
+		Addr:         config.ListenAddress(),
+		WriteTimeout: config.WriteTimeout(),
+		ReadTimeout:  config.ReadTimeout(),
+		IdleTimeout:  config.IdleTimeout(),
 		Handler:      defaultMux(),
 	}
 	log.Infow("Starting server",
-		"listenAddress", cfg.ListenAddress(),
+		"listenAddress", config.ListenAddress(),
 	)
 	err := srv.ListenAndServe()
 	if err != nil {
 		log.Errorw("Could not start server",
-			"listenAddress", cfg.ListenAddress(),
+			"listenAddress", config.ListenAddress(),
 		)
 		done <- struct{}{}
 		return

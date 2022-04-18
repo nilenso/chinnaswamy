@@ -17,7 +17,7 @@ func main() {
 		os.Exit(2)
 	}
 
-	cfg, cfgErr := config.Load("conf.yaml")
+	cfgErr := config.Init()
 	if cfgErr != nil {
 		log.Errorw("Error loading config. Exiting")
 		os.Exit(1)
@@ -36,8 +36,8 @@ func main() {
 	signal.Notify(sigint, os.Interrupt)
 
 	serverDone := make(chan struct{}, 1)
-	go chinnaswamy.Serve(ctx, cfg, serverDone)
-	log.Infow("Server started", "listenAddress", cfg.ListenAddress())
+	go chinnaswamy.Serve(ctx, serverDone)
+	log.Infow("Server started", "listenAddress", config.ListenAddress())
 
 	select {
 	case <-serverDone:
