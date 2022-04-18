@@ -19,7 +19,7 @@ func main() {
 
 	cfgErr := config.Init()
 	if cfgErr != nil {
-		log.Errorw("Error loading config. Exiting")
+		log.Errorf("Error loading config: %s. Exiting", cfgErr)
 		os.Exit(1)
 	}
 	ctx := context.Background()

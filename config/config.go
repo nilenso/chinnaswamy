@@ -15,7 +15,15 @@ func Init() error {
 
 	setDefaults()
 
-	return viper.ReadInConfig()
+	if err := viper.ReadInConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			return nil
+		} else {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func setDefaults() {
