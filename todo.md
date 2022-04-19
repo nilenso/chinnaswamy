@@ -4,7 +4,11 @@
 - [x] Log package for logging
 - [x] Separate the http server from the main process into its own package
 - [ ] Set up Cassandra using docker-compose
-- [ ] Set up infrastructure: DO droplets deployed manually
+  - [ ] Set up cassandra package in Go
+  - [ ] Update config to handle cassandra info
+  - [ ] Expand /status to test cassandra connection
+  - [ ] Add migrations
+- [x] Set up infrastructure: DO droplets deployed manually
 - [ ] Set up CI/CD on github actions
     - [x] test
     - [ ] build, deploy

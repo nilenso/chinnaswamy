@@ -1,0 +1,29 @@
+services:
+  chinnaswamy:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      CHINNASWAMY_PORT: "8080"
+    networks:
+      - "chinnaswamy-stagingnet"
+
+  cassandra:
+    image: cassandra:4.0
+    ports:
+      - "9042:9042"
+      - "9160:9160"
+      - "7000:7000"
+      - "7001:7001"
+      - "7199:7199"
+    volumes:
+      - cassandra-data:/var/lib/cassandra
+      - /home/deploy/.config/cassandra/cassandra.yaml:/etc/cassandra/cassandra.yaml
+    networks:
+      - "chinnaswamy-stagingnet"
+
+networks:
+  chinnaswamy-stagingnet:
+
+volumes:
+  cassandra-data:
