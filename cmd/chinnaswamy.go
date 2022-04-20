@@ -3,9 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
-	"nilenso.com/chinnaswamy"
 	"nilenso.com/chinnaswamy/config"
+	"nilenso.com/chinnaswamy/db"
 	"nilenso.com/chinnaswamy/log"
+	"nilenso.com/chinnaswamy/server"
 	"os"
 	"os/signal"
 )
@@ -19,10 +20,20 @@ func main() {
 
 	cfgErr := config.Init()
 	if cfgErr != nil {
-		log.Errorf("Error loading config: %s. Exiting", cfgErr)
+		log.Errorw("Error loading config",
+			"error", cfgErr,
+		)
 		os.Exit(1)
 	}
 	ctx := context.Background()
+
+	dbErr := db.Init()
+	if dbErr != nil {
+		log.Errorw("Error connecting to the db",
+			"error", dbErr,
+		)
+		os.Exit(4)
+	}
 
 	defer func() {
 		syncErr := log.SyncLogs()
@@ -36,7 +47,7 @@ func main() {
 	signal.Notify(sigint, os.Interrupt)
 
 	serverDone := make(chan struct{}, 1)
-	go chinnaswamy.Serve(ctx, serverDone)
+	go server.Serve(ctx, serverDone)
 	log.Infow("Server started", "listenAddress", config.ListenAddress())
 
 	select {

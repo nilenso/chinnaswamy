@@ -37,5 +37,8 @@ jobs:
 
       - name: Install dependencies
         run: go mod tidy
+      - run: sleep 200
+      - run: docker logs chinnaswamy_cassandra-test_1
+      - run: docker logs chinnaswamy_chinnaswamy_1
       - name: Run end to end test
         run: go test -count=1 ./integration_test

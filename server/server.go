@@ -1,23 +1,39 @@
-package chinnaswamy
+package server
 
 import (
 	"context"
 	"encoding/json"
 	"net/http"
 	"nilenso.com/chinnaswamy/config"
+	"nilenso.com/chinnaswamy/db"
 	"nilenso.com/chinnaswamy/log"
 	"time"
 )
 
+const (
+	Available   = "AVAILABLE"
+	Unavailable = "UNAVAILABLE"
+)
+
+func isDatabaseAvailable() string {
+	if db.IsAvailable() {
+		return Available
+	} else {
+		return Unavailable
+	}
+}
+
 func defaultMux() *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/status", func(writer http.ResponseWriter, req *http.Request) {
-		responseMap := map[string]string{"status": "OK"}
+		responseMap := map[string]string{"server": Available}
+		responseMap["database"] = isDatabaseAvailable()
+
 		writer.Header().Set("Content-Type", "application/json")
 		writer.WriteHeader(http.StatusOK)
 		err := json.NewEncoder(writer).Encode(responseMap)
 		if err != nil {
-			http.Error(writer, "{\"status\": \"Error\"}", http.StatusInternalServerError)
+			http.Error(writer, "{\"server\": \"UNAVAILABLE\"}", http.StatusInternalServerError)
 			return
 		}
 	})

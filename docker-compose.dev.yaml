@@ -7,26 +7,28 @@ services:
       - "8080:8080"
     environment:
       CHINNASWAMY_PORT: "8080"
-      CHINNASWAMY_DATABASEADDRESSES: "cassandra"
     networks:
-      - "chinnaswamy-stagingnet"
+      - "chinnaswamy-devnet"
+    volumes:
+      - ./conf.yaml:/conf.yaml
 
   cassandra:
     image: cassandra:4.0
     ports:
       - "9042:9042"
       - "9160:9160"
-      - "7000:7000"
+      - "7002:7002"
       - "7001:7001"
       - "7199:7199"
     volumes:
       - cassandra-data:/var/lib/cassandra
-      - /home/deploy/.config/cassandra/cassandra.yaml:/etc/cassandra/cassandra.yaml
+      - ./dev-cassandra.yaml:/etc/cassandra/cassandra.yaml
     networks:
-      - "chinnaswamy-stagingnet"
+      - "chinnaswamy-devnet"
 
 networks:
-  chinnaswamy-stagingnet:
+  chinnaswamy-devnet:
+    driver: bridge
 
 volumes:
   cassandra-data:

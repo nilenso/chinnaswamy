@@ -48,3 +48,7 @@ func WriteTimeout() time.Duration {
 func IdleTimeout() time.Duration {
 	return viper.GetDuration("idleTimeout")
 }
+
+func DatabaseAddresses() []string {
+	return viper.GetStringSlice("databaseAddresses")
+}
