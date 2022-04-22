@@ -1,0 +1,7 @@
+shortenServerPort: 8090
+redirectServerPort: 8080
+readTimeout: 30ms
+writeTimeout: 30ms
+idleTimeout: 1s
+databaseAddresses:
+  - cassandra

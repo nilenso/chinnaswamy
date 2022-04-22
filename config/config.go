@@ -27,14 +27,19 @@ func Init() error {
 }
 
 func setDefaults() {
-	viper.SetDefault("port", 8080)
+	viper.SetDefault("redirectServerPort", 8080)
+	viper.SetDefault("shortenServerPort", 8090)
 	viper.SetDefault("readTimeout", 30*time.Millisecond)
 	viper.SetDefault("writeTimeout", 30*time.Millisecond)
 	viper.SetDefault("idleTimeout", 1*time.Second)
 }
 
-func ListenAddress() string {
-	return fmt.Sprintf(":%d", viper.GetInt("port"))
+func RedirectListenAddress() string {
+	return fmt.Sprintf(":%d", viper.GetInt("redirectServerPort"))
+}
+
+func ShortenListenAddress() string {
+	return fmt.Sprintf(":%d", viper.GetInt("shortenServerPort"))
 }
 
 func ReadTimeout() time.Duration {

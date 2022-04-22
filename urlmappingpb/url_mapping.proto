@@ -1,0 +1,24 @@
+syntax = "proto3";
+package urlmappingpb;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+option go_package = "nilenso.com/chinnaswamy/urlmappingpb";
+
+service UrlShortener {
+  rpc ShortenUrl(ShortenUrlRequest) returns (UrlMapping) {}
+}
+
+message ShortenUrlRequest {
+  string long_url = 1;
+  google.protobuf.Duration TTL = 2;
+}
+
+message UrlMapping {
+  string short_url = 1;
+  string long_url = 2;
+  bool valid = 3;
+  google.protobuf.Duration TTL = 4;
+  google.protobuf.Timestamp created_at = 5;
+}
