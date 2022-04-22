@@ -17,7 +17,7 @@ const (
 )
 
 type UrlMappingStore interface {
-	QueryUrlMapping(ctx context.Context, shortUrl string) (urlmapping.UrlMapping, error)
+	QueryUrlMapping(ctx context.Context, shortUrl string) (*urlmapping.UrlMapping, error)
 }
 
 type RedirectionService struct {
@@ -50,6 +50,7 @@ func (rs *RedirectionService) defaultMux() *http.ServeMux {
 			return
 		}
 	})
+	mux.HandleFunc("/", rs.queryUrl)
 	return mux
 }
 
